@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Ações</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-card {
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .form-group button:hover {
+      background-color: #155ab6;
+    }
+
+    table.dataTable thead th {
+      background-color: #e0e0e0;
+    }
+
+    .btn-excluir {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Registro de Ações Corretivas</h2>
+
+  <div class="form-card">
+    <div class="form-group">
+      <label for="componente">Componente</label>
+      <input type="text" id="componente" placeholder="Digite o nome do componente">
+    </div>
+
+    <div class="form-group">
+      <label for="modelo">Modelo</label>
+      <select id="modelo" required>
+        <option value="">Selecione o Produto</option>
+        <option>Scala_TLS & Kamiq_TLS</option>
+        <option>SCALA & KAMIQ TLS REV C</option>
+        <option>SCALA & KAMIQ TLS REV B</option>
+        <option>SCALA & KAMIQ TLS REV A</option>
+        <option>ROADSTER_ADH</option>
+        <option>QX60 TLS</option>
+        <option>SCALA CAS</option>
+        <option>SAKE TLC</option>
+        <option>JADE TL</option>
+        <option>Jimny ADH(HH514)</option>
+        <option>Callisto ADU</option>
+        <option>Jimny _RBH REV A</option>
+        <option>Jimny RBH REV B</option>
+        <option>Ganymede ADU</option>
+        <option>PRIME H510M-E</option>
+        <option>PRIME H510M-K</option>
+        <option>PRIME H610M-E</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="acoes">Ações</label>
+      <textarea id="acoes" placeholder="Descreva as ações aqui..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="responsavel">Responsável</label>
+      <input type="text" id="responsavel" placeholder="Nome do responsável">
+    </div>
+
+    <div class="form-group">
+      <button onclick="salvarAcao()">Salvar</button>
+    </div>
+  </div>
+
+  <table id="tabela-acoes" class="display nowrap" style="width:100%">
+    <thead>
+      <tr>
+        <th>Componente</th>
+        <th>Modelo</th>
+        <th>Ações</th>
+        <th>Responsável</th>
+        <th>Excluir</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+  <script>
+    const tabela = $('#tabela-acoes').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['excel', 'pdf', 'print'],
+      responsive: true,
+    });
+
+    const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
+    dadosSalvos.forEach(item => inserirLinha(item));
+
+    function salvarAcao() {
+      const componente = document.getElementById("componente").value.trim();
+      const modelo = document.getElementById("modelo").value.trim();
+      const acoes = document.getElementById("acoes").value.trim();
+      const responsavel = document.getElementById("responsavel").value.trim();
+
+      if (!componente || !modelo || !acoes || !responsavel) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      const novaAcao = { componente, modelo, acoes, responsavel };
+      inserirLinha(novaAcao);
+      dadosSalvos.push(novaAcao);
+      localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
+
+      document.getElementById("componente").value = "";
+      document.getElementById("modelo").value = "";
+      document.getElementById("acoes").value = "";
+      document.getElementById("responsavel").value = "";
+    }
+
+    function inserirLinha(acao) {
+      const rowNode = tabela.row.add([
+        acao.componente,
+        acao.modelo,
+        acao.acoes,
+        acao.responsavel,
+        `<button class="btn-excluir">Excluir</button>`
+      ]).draw().node();
+
+      $(rowNode).find(".btn-excluir").click(function () {
+        const senha = prompt("Digite a senha para excluir:");
+        if (senha === "123") {
+          const index = tabela.row(rowNode).index();
+          dadosSalvos.splice(index, 1);
+          localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
+          tabela.row(rowNode).remove().draw();
+        } else {
+          alert("Senha incorreta.");
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
