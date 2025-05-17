@@ -19,18 +19,14 @@ function toggleFormulario() {
   form.style.display = form.style.display === 'none' ? 'block' : 'none';
 }
 
-// Cria a tabela de registros se ainda não existir
 function criarTabelaSeNecessario() {
   if (!document.getElementById('tabela-registros')) {
     const resultado = document.getElementById('resultado');
     const table = document.createElement('table');
     table.id = 'tabela-registros';
-    table.border = '1';
-    table.style.width = '100%';
-    table.style.marginTop = '10px';
     table.innerHTML = `
       <thead>
-        <tr style="background-color:#e0e0e0">
+        <tr>
           <th>Componente</th>
           <th>Modelo</th>
           <th>Ações</th>
@@ -67,13 +63,11 @@ function salvarAcao() {
 
   tbody.appendChild(novaLinha);
 
-  // Limpa os campos
   document.getElementById('componente').value = '';
   document.getElementById('modelo').value = '';
   document.getElementById('acoes').value = '';
   document.getElementById('responsavel').value = '';
 
-  // Oculta o formulário após salvar
   document.getElementById('formulario').style.display = 'none';
 }
 

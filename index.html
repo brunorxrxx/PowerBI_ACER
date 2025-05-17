@@ -1,51 +1,37 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monitoramento de Yield</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard com Ações Corretivas</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <header>
-    <img src="https://img.icons8.com/color/48/000000/pie-chart--v1.png" alt="Logo" width="40"/>
-    <h1>Parcial da Acer '</h1>
+    <h1>Monitoramento de Falhas - Dashboard</h1>
   </header>
 
   <div class="sidebar">
-    <button onclick="reloadDashboard()">Atualizar Agora</button>
-    <button onclick="abrirRegistro()">Registrar Ação</button>
-    <div class="countdown">Atualização em: <span id="timer">60</span> segundos</div>
+    <button onclick="toggleFormulario()">Nova Ação Corretiva</button>
+    <div class="countdown">Atualizando em <span id="timer">60</span> segundos</div>
   </div>
 
   <div class="content">
-    <iframe
-      id="powerbi-frame"
-      src="https://app.powerbi.com/view?r=eyJrIjoiZDk1MzA4OGEtZmQ5MS00ZTUzLTkyMDctMGIzY2U1MjEyMjc4IiwidCI6IjhlYzJhYWMxLTgwNWItNDA2OS04NDFjLTUyN2I0YWQ3MjFkMSJ9&pageName=f70603e69432f4233f0e"
-      allowfullscreen="true">
-    </iframe>
+    <iframe id="powerbi-frame" src="https://app.powerbi.com/view?r=SEU_LINK_DO_POWERBI"></iframe>
 
-    <div id="formulario" style="display:none; margin-top: 20px; background:#f8f7f7; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); position: relative;">
-        <button onclick="fecharFormulario()" style="position:absolute; top:10px; right:10px; background:#e74c3c; color:#fff; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">X</button>
-        <h3>Registrar Ação</h3>
-        <input type="text" id="Componente" placeholder="Componente"><br><br>
-        <input type="text" id="Modelo" placeholder="Modelo"><br><br>
-        <input type="text" id="Acoes" placeholder="Ações"><br><br>
-        <input type="text" id="Responsavel" placeholder="Responsável"><br><br>
-        <button onclick="salvarAcao()">Salvar</button>
-      </div>
-      
+    <div id="formulario">
+      <h3>Registrar Ação Corretiva</h3>
+      <input type="text" id="componente" placeholder="Componente">
+      <input type="text" id="modelo" placeholder="Modelo">
+      <input type="text" id="acoes" placeholder="Descrição da Ação">
+      <input type="text" id="responsavel" placeholder="Responsável">
+      <button onclick="salvarAcao()">Salvar</button>
+      <button onclick="fecharFormulario()">Fechar</button>
+    </div>
 
-    <div id="resultado" style="margin-top: 10px;"></div>
+    <div id="resultado"></div>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function abrirRegistro() {
-      window.open("registro.html", "Registro de Ações", "width=900,height=600");
-    }
-  </script>
-  
 </body>
 </html>
