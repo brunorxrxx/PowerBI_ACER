@@ -34,18 +34,74 @@
         <input type="text" id="Acoes" placeholder="Ações"><br><br>
         <input type="text" id="Responsavel" placeholder="Responsável"><br><br>
         <button onclick="salvarAcao()">Salvar</button>
-      </div>
-      
+    </div>
 
     <div id="resultado" style="margin-top: 10px;"></div>
   </div>
 
-  <script src="script.js"></script>
   <script>
+    // Substitua pela sua URL do Google Apps Script
+    const scriptURL = "https://script.google.com/macros/s/SEU_ID_AQUI/exec";
+
     function abrirRegistro() {
-      window.open("registro.html", "Registro de Ações", "width=900,height=600");
+      document.getElementById("formulario").style.display = "block";
     }
+
+    function fecharFormulario() {
+      document.getElementById("formulario").style.display = "none";
+    }
+
+    function salvarAcao() {
+      const componente = document.getElementById("Componente").value;
+      const modelo = document.getElementById("Modelo").value;
+      const acoes = document.getElementById("Acoes").value;
+      const responsavel = document.getElementById("Responsavel").value;
+
+      if (!componente || !modelo || !acoes || !responsavel) {
+        document.getElementById("resultado").textContent = "Por favor, preencha todos os campos.";
+        return;
+      }
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({
+          componente: componente,
+          modelo: modelo,
+          acoes: acoes,
+          responsavel: responsavel
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        document.getElementById("resultado").textContent = "Ação registrada com sucesso!";
+        document.getElementById("formulario").style.display = "none";
+        document.getElementById("Componente").value = "";
+        document.getElementById("Modelo").value = "";
+        document.getElementById("Acoes").value = "";
+        document.getElementById("Responsavel").value = "";
+      })
+      .catch(error => {
+        document.getElementById("resultado").textContent = "Erro ao enviar os dados.";
+        console.error("Erro:", error);
+      });
+    }
+
+    // Simulação da função de atualização automática (você pode personalizar)
+    function reloadDashboard() {
+      document.getElementById("powerbi-frame").src += "";
+    }
+
+    // Temporizador de atualização
+    let tempo = 60;
+    setInterval(() => {
+      tempo--;
+      document.getElementById("timer").textContent = tempo;
+      if (tempo === 0) {
+        reloadDashboard();
+        tempo = 60;
+      }
+    }, 1000);
   </script>
-  
+
 </body>
 </html>
