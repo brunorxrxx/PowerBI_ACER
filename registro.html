@@ -61,19 +61,22 @@
 <body>
 
   <h2>Registrar Nova Ação</h2>
-  <input type="text" id="componente" placeholder="Componente" />
   <input type="text" id="modelo" placeholder="Modelo" />
-  <input type="text" id="acoes" placeholder="Ações" />
-  <input type="text" id="responsavel" placeholder="Responsável" />
+  <input type="text" id="responsavel" placeholder="Station" />
+  <input type="text" id="componente" placeholder="Componente" />
+  <input type="text" id="causa" placeholder="Causa" />
+  <input type="text" id="acoes" placeholder="Ação" />
   <button onclick="salvarAcao()">Salvar</button>
 
   <table id="tabela-acoes">
     <thead>
       <tr>
-        <th>Componente</th>
+        <th>Data</th>
         <th>Modelo</th>
-        <th>Ações</th>
-        <th>Responsável</th>
+        <th>Station</th>
+        <th>Componente</th>
+        <th>Causa</th>
+        <th>Ação</th>
         <th>Excluir</th>
       </tr>
     </thead>
@@ -82,43 +85,47 @@
 
   <script>
     const tabela = document.getElementById("tabela-acoes").getElementsByTagName('tbody')[0];
-
-    // Recarregar dados do localStorage
     const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
     dadosSalvos.forEach(item => inserirLinha(item));
 
     function salvarAcao() {
-      const componente = document.getElementById("componente").value.trim();
       const modelo = document.getElementById("modelo").value.trim();
-      const acoes = document.getElementById("acoes").value.trim();
       const responsavel = document.getElementById("responsavel").value.trim();
+      const componente = document.getElementById("componente").value.trim();
+      const causa = document.getElementById("causa").value.trim();
+      const acoes = document.getElementById("acoes").value.trim();
 
-      if (!componente || !modelo || !acoes || !responsavel) {
+      if (!modelo || !responsavel || !componente || !causa || !acoes) {
         alert("Preencha todos os campos.");
         return;
       }
 
-      const novaAcao = { componente, modelo, acoes, responsavel };
+      const dataAtual = new Date();
+      const dataFormatada = dataAtual.toLocaleDateString('pt-BR') + ' ' + dataAtual.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+      const novaAcao = { data: dataFormatada, modelo, responsavel, componente, causa, acoes };
       inserirLinha(novaAcao);
 
       dadosSalvos.push(novaAcao);
       localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
 
-      // Limpar campos
-      document.getElementById("componente").value = "";
       document.getElementById("modelo").value = "";
-      document.getElementById("acoes").value = "";
       document.getElementById("responsavel").value = "";
+      document.getElementById("componente").value = "";
+      document.getElementById("causa").value = "";
+      document.getElementById("acoes").value = "";
     }
 
     function inserirLinha(acao) {
       const linha = tabela.insertRow();
-      linha.insertCell(0).innerText = acao.componente;
+      linha.insertCell(0).innerText = acao.data;
       linha.insertCell(1).innerText = acao.modelo;
-      linha.insertCell(2).innerText = acao.acoes;
-      linha.insertCell(3).innerText = acao.responsavel;
+      linha.insertCell(2).innerText = acao.responsavel;
+      linha.insertCell(3).innerText = acao.componente;
+      linha.insertCell(4).innerText = acao.causa;
+      linha.insertCell(5).innerText = acao.acoes;
 
-      const cellExcluir = linha.insertCell(4);
+      const cellExcluir = linha.insertCell(6);
       const botao = document.createElement("button");
       botao.innerText = "Excluir";
       botao.className = "btn-excluir";
