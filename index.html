@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monitoramento de Yield1</title>
+  <title>Monitoramento de Yield</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,72 +34,18 @@
         <input type="text" id="Acoes" placeholder="Ações"><br><br>
         <input type="text" id="Responsavel" placeholder="Responsável"><br><br>
         <button onclick="salvarAcao()">Salvar</button>
-    </div>
+      </div>
+      
 
     <div id="resultado" style="margin-top: 10px;"></div>
   </div>
 
+  <script src="script.js"></script>
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyXwV5Uyblxweyiho1N7iWjZqKwXiYSGYkvihvy2BYSzvHHDV1XDgJGE9LYr0z1O_vW/exec";
-
     function abrirRegistro() {
-      document.getElementById("formulario").style.display = "block";
+      window.open("registro.html", "Registro de Ações", "width=900,height=600");
     }
-
-    function fecharFormulario() {
-      document.getElementById("formulario").style.display = "none";
-    }
-
-    function salvarAcao() {
-      const componente = document.getElementById("Componente").value;
-      const modelo = document.getElementById("Modelo").value;
-      const acoes = document.getElementById("Acoes").value;
-      const responsavel = document.getElementById("Responsavel").value;
-
-      if (!componente || !modelo || !acoes || !responsavel) {
-        document.getElementById("resultado").textContent = "Por favor, preencha todos os campos.";
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("componente", componente);
-      formData.append("modelo", modelo);
-      formData.append("acoes", acoes);
-      formData.append("responsavel", responsavel);
-
-      fetch(scriptURL, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(result => {
-        document.getElementById("resultado").textContent = "Ação registrada com sucesso!";
-        document.getElementById("formulario").style.display = "none";
-        document.getElementById("Componente").value = "";
-        document.getElementById("Modelo").value = "";
-        document.getElementById("Acoes").value = "";
-        document.getElementById("Responsavel").value = "";
-      })
-      .catch(error => {
-        document.getElementById("resultado").textContent = "Erro ao enviar os dados.";
-        console.error("Erro:", error);
-      });
-    }
-
-    function reloadDashboard() {
-      document.getElementById("powerbi-frame").src += "";
-    }
-
-    let tempo = 60;
-    setInterval(() => {
-      tempo--;
-      document.getElementById("timer").textContent = tempo;
-      if (tempo === 0) {
-        reloadDashboard();
-        tempo = 60;
-      }
-    }, 1000);
   </script>
-
+  
 </body>
 </html>
