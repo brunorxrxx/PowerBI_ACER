@@ -1,76 +1,65 @@
-let timer = 60;
-
-function reloadDashboard() {
-  const iframe = document.getElementById('powerbi-frame');
-  iframe.src = iframe.src;
-  timer = 60;
-}
-
-setInterval(() => {
-  timer--;
-  if (timer <= 0) {
-    reloadDashboard();
-  }
-  document.getElementById('timer').textContent = timer;
-}, 1000);
-
-function toggleFormulario() {
-  const form = document.getElementById('formulario');
-  form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
-
-function criarTabelaSeNecessario() {
-  if (!document.getElementById('tabela-registros')) {
-    const resultado = document.getElementById('resultado');
-    const table = document.createElement('table');
-    table.id = 'tabela-registros';
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>Componente</th>
-          <th>Modelo</th>
-          <th>Ações</th>
-          <th>Responsável</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-    resultado.appendChild(table);
-  }
-}
+const tabela = document.getElementById("tabela-acoes").getElementsByTagName('tbody')[0];
+const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
+dadosSalvos.forEach(item => inserirLinha(item));
 
 function salvarAcao() {
-  const componente = document.getElementById('componente').value.trim();
-  const modelo = document.getElementById('modelo').value.trim();
-  const acoes = document.getElementById('acoes').value.trim();
-  const responsavel = document.getElementById('responsavel').value.trim();
+  const modelo = document.getElementById("modelo").value.trim();
+  const responsavel = document.getElementById("responsavel").value.trim();
+  const componente = document.getElementById("componente").value.trim();
+  const causa = document.getElementById("causa").value.trim();
+  const acoes = document.getElementById("acoes").value.trim();
 
-  if (!componente || !modelo || !acoes || !responsavel) {
+  if (!modelo || !responsavel || !componente || !causa || !acoes) {
     alert("Preencha todos os campos.");
     return;
   }
 
-  criarTabelaSeNecessario();
-  const tbody = document.querySelector('#tabela-registros tbody');
-  const novaLinha = document.createElement('tr');
+  const dataAtual = new Date();
+  const dataFormatada = dataAtual.toLocaleDateString('pt-BR') + ' ' +
+    dataAtual.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-  novaLinha.innerHTML = `
-    <td>${componente}</td>
-    <td>${modelo}</td>
-    <td>${acoes}</td>
-    <td>${responsavel}</td>
-  `;
+  const novaAcao = { data: dataFormatada, modelo, responsavel, componente, causa, acoes };
+  inserirLinha(novaAcao);
 
-  tbody.appendChild(novaLinha);
+  dadosSalvos.push(novaAcao);
+  localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
 
-  document.getElementById('componente').value = '';
-  document.getElementById('modelo').value = '';
-  document.getElementById('acoes').value = '';
-  document.getElementById('responsavel').value = '';
-
-  document.getElementById('formulario').style.display = 'none';
+  document.getElementById("modelo").value = "";
+  document.getElementById("responsavel").value = "";
+  document.getElementById("componente").value = "";
+  document.getElementById("causa").value = "";
+  document.getElementById("acoes").value = "";
 }
 
-function fecharFormulario() {
-  document.getElementById('formulario').style.display = 'none';
+function inserirLinha(acao) {
+  const linha = tabela.insertRow();
+  linha.insertCell(0).innerText = acao.data;
+  linha.insertCell(1).innerText = acao.modelo;
+  linha.insertCell(2).innerText = acao.responsavel;
+  linha.insertCell(3).innerText = acao.componente;
+  linha.insertCell(4).innerText = acao.causa;
+  linha.insertCell(5).innerText = acao.acoes;
+
+  const cellExcluir = linha.insertCell(6);
+  const botao = document.createElement("button");
+  botao.innerText = "Excluir";
+  botao.className = "btn-excluir";
+
+  botao.onclick = function () {
+    const senha = prompt("Digite a senha para excluir:");
+    if (senha === "123") {
+      const index = Array.from(tabela.rows).indexOf(linha);
+      dadosSalvos.splice(index, 1);
+      localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
+      tabela.deleteRow(index);
+    } else {
+      alert("Senha incorreta.");
+    }
+  };
+
+  cellExcluir.appendChild(botao);
+}
+
+function voltarParaPainel() {
+  window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
 }
