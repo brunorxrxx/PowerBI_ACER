@@ -83,13 +83,14 @@ function inserirLinha(acao) {
 
 // Função para voltar para o painel principal
 document.addEventListener('DOMContentLoaded', () => {
-  const btnVoltar = document.getElementById('btnVoltar').addEventListener('click', () => {
-  window.close();
-});
+  const btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar) {
+    btnVoltar.addEventListener('click', () => {
+      // Tentar fechar a janela (funciona só se aberta por JS)
+      window.close();
 
+      // Redireciona para o painel
       window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
     });
-
-function voltarParaPainel() {
-  window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
-}
+  }
+});

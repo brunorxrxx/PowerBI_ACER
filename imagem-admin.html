@@ -125,7 +125,10 @@
     });
 
     btnVoltar.addEventListener('click', () => {
-      window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
+      // Abre o painel numa nova aba
+      window.open("https://brunorxrxx.github.io/PowerBI_ACER/", "_blank");
+      // Tenta fechar a janela atual (funciona se foi aberta via window.open)
+      window.close();
     });
   </script>
 
