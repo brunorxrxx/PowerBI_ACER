@@ -27,15 +27,14 @@
     </iframe>
 
     <div id="formulario" style="display:none; margin-top: 20px; background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); position: relative;">
-        <button onclick="fecharFormulario()" style="position:absolute; top:10px; right:10px; background:#e74c3c; color:#fff; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">X</button>
-        <h3>Registrar Ação</h3>
-        <input type="text" id="componente" placeholder="Componente"><br><br>
-        <input type="text" id="modelo" placeholder="Modelo"><br><br>
-        <input type="text" id="acoes" placeholder="Ações"><br><br>
-        <input type="text" id="responsavel" placeholder="Responsável"><br><br>
-        <button onclick="salvarAcao()">Salvar</button>
-      </div>
-      
+      <button onclick="fecharFormulario()" style="position:absolute; top:10px; right:10px; background:#e74c3c; color:#fff; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">X</button>
+      <h3>Registrar Ação</h3>
+      <input type="text" id="componente" placeholder="Componente"><br><br>
+      <input type="text" id="modelo" placeholder="Modelo"><br><br>
+      <input type="text" id="acoes" placeholder="Ações"><br><br>
+      <input type="text" id="responsavel" placeholder="Responsável"><br><br>
+      <button onclick="salvarAcao()">Salvar</button>
+    </div>
 
     <div id="resultado" style="margin-top: 20px;"></div>
   </div>
@@ -45,7 +44,12 @@
     function abrirRegistro() {
       window.open("registro.html", "Registro de Ações", "width=900,height=600");
     }
+
+    function reloadDashboard() {
+      const iframe = document.getElementById('powerbi-frame');
+      iframe.src = iframe.src;
+    }
   </script>
-  
+
 </body>
 </html>
