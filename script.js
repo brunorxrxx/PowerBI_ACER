@@ -12,21 +12,8 @@ function abrirImagemAdmin() {
   window.open('imagem-admin.html', 'Imagem', 'width=600,height=600');
 }
 
-// Controle para exclusão da imagem admin com senha
-function excluirImagemAdmin() {
-  const senha = prompt("Digite a senha para excluir a imagem do admin:");
-  if (senha === "123") {
-    const img = document.getElementById("imagemAdmin");
-    if (img) {
-      img.remove();
-      alert("Imagem removida com sucesso!");
-    }
-  } else {
-    alert("Senha incorreta.");
-  }
-}
+// Código para gerenciar as ações
 
-// Código que você enviou para gerenciar as ações
 const tabela = document.getElementById("tabela-acoes")?.getElementsByTagName('tbody')[0];
 const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
 
@@ -93,6 +80,15 @@ function inserirLinha(acao) {
 
   cellExcluir.appendChild(botao);
 }
+
+// Função para voltar para o painel principal
+document.addEventListener('DOMContentLoaded', () => {
+  const btnVoltar = document.getElementById('btnVoltar').addEventListener('click', () => {
+  window.close();
+});
+
+      window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
+    });
 
 function voltarParaPainel() {
   window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";

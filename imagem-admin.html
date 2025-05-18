@@ -35,16 +35,22 @@
       max-height: 100%;
       border-radius: 10px;
     }
-    #btnExcluir {
+    #btnExcluir, #btnVoltar {
       margin-top: 15px;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #e74c3c;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      display: none;
+      display: inline-block;
+    }
+    #btnExcluir {
+      background-color: #e74c3c;
+    }
+    #btnVoltar {
+      background-color: #3498db;
+      margin-left: 10px;
     }
   </style>
 </head>
@@ -55,11 +61,13 @@
   <div id="drop-area">Arraste a imagem aqui ou clique para selecionar</div>
   <input type="file" id="fileElem" accept="image/*" style="display:none" />
   <button id="btnExcluir">Excluir Imagem</button>
+  <button id="btnVoltar">Voltar para o Painel</button>
 
   <script>
     const dropArea = document.getElementById('drop-area');
     const fileElem = document.getElementById('fileElem');
     const btnExcluir = document.getElementById('btnExcluir');
+    const btnVoltar = document.getElementById('btnVoltar');
 
     // Abrir seletor de arquivo ao clicar na área
     dropArea.addEventListener('click', () => fileElem.click());
@@ -112,6 +120,10 @@
       } else {
         alert('Senha incorreta!');
       }
+    });
+
+    btnVoltar.addEventListener('click', () => {
+      window.location.href = "https://brunorxrxx.github.io/PowerBI_ACER/";
     });
   </script>
 
