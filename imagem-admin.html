@@ -43,14 +43,16 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      display: inline-block;
+      display: none; /* Começa escondido */
     }
     #btnExcluir {
       background-color: #e74c3c;
+      display: none; /* Começa escondido */
     }
     #btnVoltar {
       background-color: #3498db;
       margin-left: 10px;
+      display: inline-block; /* Sempre visível */
     }
   </style>
 </head>
@@ -107,7 +109,7 @@
       const reader = new FileReader();
       reader.onload = (e) => {
         dropArea.innerHTML = `<img src="${e.target.result}" alt="Imagem do Admin">`;
-        btnExcluir.style.display = 'inline-block';
+        btnExcluir.style.display = 'inline-block';  // Mostrar botão de excluir
       };
       reader.readAsDataURL(file);
     }
