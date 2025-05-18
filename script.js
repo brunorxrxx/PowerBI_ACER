@@ -1,15 +1,47 @@
-const tabela = document.getElementById("tabela-acoes").getElementsByTagName('tbody')[0];
+// Funções já usadas no HTML
+function abrirRegistro() {
+  window.open("registro.html", "Registro de Ações", "width=900,height=600");
+}
+
+function reloadDashboard() {
+  const iframe = document.getElementById('powerbi-frame');
+  iframe.src = iframe.src;
+}
+
+function abrirImagemAdmin() {
+  window.open('imagem-admin.html', 'Imagem', 'width=600,height=600');
+}
+
+// Controle para exclusão da imagem admin com senha
+function excluirImagemAdmin() {
+  const senha = prompt("Digite a senha para excluir a imagem do admin:");
+  if (senha === "123") {
+    const img = document.getElementById("imagemAdmin");
+    if (img) {
+      img.remove();
+      alert("Imagem removida com sucesso!");
+    }
+  } else {
+    alert("Senha incorreta.");
+  }
+}
+
+// Código que você enviou para gerenciar as ações
+const tabela = document.getElementById("tabela-acoes")?.getElementsByTagName('tbody')[0];
 const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
-dadosSalvos.forEach(item => inserirLinha(item));
+
+if (tabela) {
+  dadosSalvos.forEach(item => inserirLinha(item));
+}
 
 function salvarAcao() {
   const modelo = document.getElementById("modelo").value.trim();
   const responsavel = document.getElementById("responsavel").value.trim();
   const componente = document.getElementById("componente").value.trim();
-  const causa = document.getElementById("causa").value.trim();
+  const causa = document.getElementById("causa")?.value.trim() || ""; // Se existir campo causa
   const acoes = document.getElementById("acoes").value.trim();
 
-  if (!modelo || !responsavel || !componente || !causa || !acoes) {
+  if (!modelo || !responsavel || !componente || !acoes || (document.getElementById("causa") && !causa)) {
     alert("Preencha todos os campos.");
     return;
   }
@@ -24,20 +56,22 @@ function salvarAcao() {
   dadosSalvos.push(novaAcao);
   localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
 
+  // Limpa campos
   document.getElementById("modelo").value = "";
   document.getElementById("responsavel").value = "";
   document.getElementById("componente").value = "";
-  document.getElementById("causa").value = "";
+  if(document.getElementById("causa")) document.getElementById("causa").value = "";
   document.getElementById("acoes").value = "";
 }
 
 function inserirLinha(acao) {
+  if (!tabela) return;
   const linha = tabela.insertRow();
   linha.insertCell(0).innerText = acao.data;
   linha.insertCell(1).innerText = acao.modelo;
   linha.insertCell(2).innerText = acao.responsavel;
   linha.insertCell(3).innerText = acao.componente;
-  linha.insertCell(4).innerText = acao.causa;
+  linha.insertCell(4).innerText = acao.causa || "";
   linha.insertCell(5).innerText = acao.acoes;
 
   const cellExcluir = linha.insertCell(6);
