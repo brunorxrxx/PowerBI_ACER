@@ -25,7 +25,7 @@ function salvarAcao() {
   const modelo = document.getElementById("modelo").value.trim();
   const responsavel = document.getElementById("responsavel").value.trim();
   const componente = document.getElementById("componente").value.trim();
-  const causa = document.getElementById("causa")?.value.trim() || ""; // Se existir campo causa
+  const causa = document.getElementById("causa")?.value.trim() || "";
   const acoes = document.getElementById("acoes").value.trim();
 
   if (!modelo || !responsavel || !componente || !acoes || (document.getElementById("causa") && !causa)) {
@@ -47,7 +47,7 @@ function salvarAcao() {
   document.getElementById("modelo").value = "";
   document.getElementById("responsavel").value = "";
   document.getElementById("componente").value = "";
-  if(document.getElementById("causa")) document.getElementById("causa").value = "";
+  if (document.getElementById("causa")) document.getElementById("causa").value = "";
   document.getElementById("acoes").value = "";
 }
 
@@ -60,6 +60,8 @@ function inserirLinha(acao) {
   linha.insertCell(3).innerText = acao.componente;
   linha.insertCell(4).innerText = acao.causa || "";
   linha.insertCell(5).innerText = acao.acoes;
+
+  // Célula de ações (Excluir e Editar)
 
   const cellExcluir = linha.insertCell(6);
   const botao = document.createElement("button");

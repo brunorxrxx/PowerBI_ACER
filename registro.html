@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Registro de Ações</title>
@@ -55,44 +55,43 @@
       border: none;
       cursor: pointer;
       padding: 5px 10px;
+      cursor: pointer;
+    }
+    .btn-excluir:hover {
+      background-color: #c9302c;
     }
   </style>
 </head>
 <body>
 
-  <!-- Botão de Voltar -->
-  <button onclick="voltarParaPainel()" style="background-color: #6c757d;">Voltar para o Painel</button>
+  <h1>Registro de Ações Corretivas</h1>
 
-  <h2>Registrar Nova Ação</h2>
-  <input type="text" id="modelo" placeholder="Modelo" />
-  <input type="text" id="responsavel" placeholder="Station" />
-  <input type="text" id="componente" placeholder="Componente" />
-  <input type="text" id="causa" placeholder="Causa" />
-  <input type="text" id="acoes" placeholder="Ação" />
-  <button onclick="salvarAcao()">Salvar</button>
+  <label>Modelo: <input type="text" id="modelo"></label><br>
+  <label>Responsável: <input type="text" id="responsavel"></label><br>
+  <label>Componente: <input type="text" id="componente"></label><br>
+  <label>Causa: <input type="text" id="causa"></label><br>
+  <label>Ações: <input type="text" id="acoes"></label><br><br>
+
+  <button onclick="salvarAcao()">Salvar Ação</button>
+  <button id="btnVoltar">Voltar para Painel</button>
 
   <table id="tabela-acoes">
     <thead>
       <tr>
         <th>Data</th>
         <th>Modelo</th>
-        <th>Station</th>
+        <th>Responsável</th>
         <th>Componente</th>
         <th>Causa</th>
-        <th>Ação</th>
+        <th>Ações</th>
         <th>Excluir</th>
+        
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
-  <!-- Link para o script externo -->
-<script src="script.js"></script>
-
-<script>
-  function voltarParaPainel() {
-    window.close();
-  }
-</script>
+  <!-- Carrega o script externo -->
+  <script src="script.js"></script>
 </body>
 </html>
