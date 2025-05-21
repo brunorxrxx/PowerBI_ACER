@@ -5,23 +5,26 @@
   <title>Registro de Ações</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f9fafb;
       padding: 20px;
+      color: #333;
     }
 
     h2 {
-      color: #1a73e8;
+      color: #2563eb;
+      margin-bottom: 20px;
     }
 
     .formulario {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      background: white;
+      background: #fff;
       padding: 20px;
-      border-radius: 8px;
-      max-width: 800px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 900px;
       margin-bottom: 30px;
     }
 
@@ -36,249 +39,283 @@
       min-width: 180px;
     }
 
-    .linha-inputs label,
-    .linha-acoes label {
-      font-weight: bold;
+    label {
+      font-weight: 600;
       margin-bottom: 5px;
       display: block;
     }
 
-    input, textarea {
+    input, textarea, select {
       padding: 10px;
       width: 100%;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
       box-sizing: border-box;
-      border-radius: 4px;
-      border: 1px solid #ccc;
     }
 
     textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 80px;
     }
 
     button {
       padding: 10px 20px;
-      background-color: #1a73e8;
+      background-color: #2563eb;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
-      width: fit-content;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #155ab6;
+      background-color: #1d4ed8;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background-color: white;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
+      padding: 12px 15px;
+      border-bottom: 1px solid #e5e7eb;
     }
 
     th {
-      background-color: #e0e0e0;
+      background: #f3f4f6;
+      text-align: left;
     }
 
     .btn-editar, .btn-excluir {
-      padding: 5px 10px;
+      padding: 6px 12px;
       margin-right: 5px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
+      border: none;
+      transition: opacity 0.3s;
     }
 
     .btn-editar {
-      background-color: #f1c40f;
-      color: white;
-      border: none;
+      background-color: #facc15;
+      color: #000;
     }
 
     .btn-excluir {
-      background-color: #e74c3c;
-      color: white;
-      border: none;
+      background-color: #ef4444;
+      color: #fff;
+    }
+
+    .btn-editar:hover, .btn-excluir:hover {
+      opacity: 0.8;
     }
 
     #pesquisa {
       padding: 10px;
       margin-bottom: 15px;
       width: 100%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      max-width: 400px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
 
-  <h2>Registrar Nova Ação</h2>
+<h2>Registrar Nova Ação</h2>
 
-  <div class="formulario">
-    <div class="linha-inputs">
-      <div>
-        <label for="componente">Componente:</label>
-        <input type="text" id="componente" />
-      </div>
-      <div>
-        <label for="modelo">Modelo:</label>
-        <input type="text" id="modelo" />
-      </div>
-      <div>
-        <label for="causa">Causa:</label>
-        <input type="text" id="causa" />
-      </div>
-      <div>
-        <label for="responsavel">Responsável:</label>
-        <input type="text" id="responsavel" />
-      </div>
+<div class="formulario">
+  <div class="linha-inputs">
+    <div>
+      <label for="componente">Componente:</label>
+      <input type="text" id="componente" />
     </div>
-
-    <div class="linha-acoes">
-      <label for="acoes">Ações:</label>
-      <textarea id="acoes" placeholder="Descreva a ação tomada..."></textarea>
+    <div>
+      <label for="modelo">Modelo:</label>
+      <input type="text" id="modelo" />
     </div>
-
-    <button id="btnSalvar" onclick="salvarAcao()">Salvar</button>
+    <div>
+      <label for="causa">Causa:</label>
+      <input type="text" id="causa" />
+    </div>
+    <div>
+      <label for="responsavel">Responsável:</label>
+      <input type="text" id="responsavel" />
+    </div>
+    <div>
+      <label for="departamento">Departamento:</label>
+      <input type="text" id="departamento" />
+    </div>
+    <div>
+      <label for="prioridade">Prioridade:</label>
+      <select id="prioridade">
+        <option>Baixa</option>
+        <option>Média</option>
+        <option>Alta</option>
+      </select>
+    </div>
+    <div>
+      <label for="status">Status:</label>
+      <select id="status">
+        <option>Aberto</option>
+        <option>Em andamento</option>
+        <option>Fechado</option>
+      </select>
+    </div>
   </div>
 
-  <input type="text" id="pesquisa" placeholder="Pesquisar por componente, modelo, causa..." onkeyup="filtrarTabela()" />
+  <div>
+    <label for="acoes">Ações:</label>
+    <textarea id="acoes" placeholder="Descreva a ação tomada..."></textarea>
+  </div>
 
-  <table id="tabela-acoes">
-    <thead>
-      <tr>
-        <th>Data/Hora</th>
-        <th>Componente</th>
-        <th>Modelo</th>
-        <th>Causa</th>
-        <th>Ações</th>
-        <th>Responsável</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <button onclick="salvarAcao()">Salvar</button>
+</div>
 
-  <script>
-    const tabela = document.getElementById("tabela-acoes").getElementsByTagName('tbody')[0];
-    const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
-    let indexEditando = null;
+<input type="text" id="pesquisa" placeholder="Pesquisar..." onkeyup="filtrarTabela()" />
 
-    dadosSalvos.forEach((item, index) => inserirLinha(item, index));
+<button onclick="exportarCSV()">Exportar para Excel</button>
 
-    function salvarAcao() {
-      const componente = document.getElementById("componente").value.trim();
-      const modelo = document.getElementById("modelo").value.trim();
-      const causa = document.getElementById("causa").value.trim();
-      const acoes = document.getElementById("acoes").value.trim();
-      const responsavel = document.getElementById("responsavel").value.trim();
-      const dataHora = new Date().toLocaleString();
+<table id="tabela-acoes">
+  <thead>
+    <tr>
+      <th>Data/Hora</th>
+      <th>Componente</th>
+      <th>Modelo</th>
+      <th>Causa</th>
+      <th>Ações</th>
+      <th>Responsável</th>
+      <th>Departamento</th>
+      <th>Prioridade</th>
+      <th>Status</th>
+      <th>Gerenciar</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-      if (!componente || !modelo || !causa || !acoes || !responsavel) {
-        alert("Preencha todos os campos.");
-        return;
-      }
+<script>
+  const tabela = document.querySelector("#tabela-acoes tbody");
+  const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
+  let indexEditando = null;
 
-      const novaAcao = { dataHora, componente, modelo, causa, acoes, responsavel };
+  function salvarAcao() {
+    const novaAcao = {
+      dataHora: new Date().toLocaleString(),
+      componente: getValue("componente"),
+      modelo: getValue("modelo"),
+      causa: getValue("causa"),
+      acoes: getValue("acoes"),
+      responsavel: getValue("responsavel"),
+      departamento: getValue("departamento"),
+      prioridade: getValue("prioridade"),
+      status: getValue("status")
+    };
 
-      if (indexEditando !== null) {
-        novaAcao.dataHora = dadosSalvos[indexEditando].dataHora;
-        dadosSalvos[indexEditando] = novaAcao;
-        atualizarTabela();
-        indexEditando = null;
-        document.getElementById("btnSalvar").innerText = "Salvar";
-      } else {
-        dadosSalvos.push(novaAcao);
-        inserirLinha(novaAcao, dadosSalvos.length - 1);
-      }
-
-      localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
-      limparCampos();
+    if (Object.values(novaAcao).some(val => val.trim() === "")) {
+      alert("Preencha todos os campos.");
+      return;
     }
 
-    function inserirLinha(acao, index) {
+    if (indexEditando !== null) {
+      novaAcao.dataHora = dadosSalvos[indexEditando].dataHora;
+      dadosSalvos[indexEditando] = novaAcao;
+      indexEditando = null;
+      document.querySelector("button[onclick='salvarAcao()']").innerText = "Salvar";
+    } else {
+      dadosSalvos.push(novaAcao);
+    }
+
+    atualizarStorage();
+    atualizarTabela();
+    limparCampos();
+  }
+
+  function atualizarStorage() {
+    localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
+  }
+
+  function atualizarTabela() {
+    tabela.innerHTML = "";
+    dadosSalvos.forEach((acao, index) => {
       const linha = tabela.insertRow();
-
-      linha.insertCell(0).innerText = acao.dataHora;
-      linha.insertCell(1).innerText = acao.componente;
-      linha.insertCell(2).innerText = acao.modelo;
-      linha.insertCell(3).innerText = acao.causa;
-      linha.insertCell(4).innerText = acao.acoes;
-      linha.insertCell(5).innerText = acao.responsavel;
-
-      const cellAcoes = linha.insertCell(6);
-      const btnEditar = document.createElement("button");
-      btnEditar.innerText = "Editar";
-      btnEditar.className = "btn-editar";
-      btnEditar.onclick = () => editarLinha(index);
-
-      const btnExcluir = document.createElement("button");
-      btnExcluir.innerText = "X";
-      btnExcluir.className = "btn-excluir";
-      btnExcluir.onclick = () => excluirLinha(index);
-
-      cellAcoes.appendChild(btnEditar);
-      cellAcoes.appendChild(btnExcluir);
-    }
-
-    function editarLinha(index) {
-      const acao = dadosSalvos[index];
-      document.getElementById("componente").value = acao.componente;
-      document.getElementById("modelo").value = acao.modelo;
-      document.getElementById("causa").value = acao.causa;
-      document.getElementById("acoes").value = acao.acoes;
-      document.getElementById("responsavel").value = acao.responsavel;
-      indexEditando = index;
-      document.getElementById("btnSalvar").innerText = "Atualizar";
-    }
-
-    function excluirLinha(index) {
-      if (confirm("Deseja realmente excluir este registro?")) {
-        dadosSalvos.splice(index, 1);
-        localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
-        atualizarTabela();
+      for (let chave of ['dataHora', 'componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status']) {
+        linha.insertCell().innerText = acao[chave];
       }
+      const cell = linha.insertCell();
+      const btnEditar = criarBotao("Editar", "btn-editar", () => editarLinha(index));
+      const btnExcluir = criarBotao("Excluir", "btn-excluir", () => excluirLinha(index));
+      cell.append(btnEditar, btnExcluir);
+    });
+  }
+
+  function criarBotao(texto, classe, onClick) {
+    const btn = document.createElement("button");
+    btn.innerText = texto;
+    btn.className = classe;
+    btn.onclick = onClick;
+    return btn;
+  }
+
+  function editarLinha(index) {
+    const acao = dadosSalvos[index];
+    for (let chave of ['componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status']) {
+      setValue(chave, acao[chave]);
     }
+    indexEditando = index;
+    document.querySelector("button[onclick='salvarAcao()']").innerText = "Atualizar";
+  }
 
-    function atualizarTabela() {
-      tabela.innerHTML = "";
-      dadosSalvos.forEach((item, index) => inserirLinha(item, index));
+  function excluirLinha(index) {
+    const senha = prompt("Digite a senha para excluir:");
+    if (senha === "123") {
+      dadosSalvos.splice(index, 1);
+      atualizarStorage();
+      atualizarTabela();
+    } else {
+      alert("Senha incorreta.");
     }
+  }
 
-    function limparCampos() {
-      document.getElementById("componente").value = "";
-      document.getElementById("modelo").value = "";
-      document.getElementById("causa").value = "";
-      document.getElementById("acoes").value = "";
-      document.getElementById("responsavel").value = "";
-    }
+  function limparCampos() {
+    ['componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status'].forEach(id => setValue(id, ""));
+  }
 
-    function filtrarTabela() {
-      const termo = document.getElementById("pesquisa").value.toLowerCase();
-      const linhas = tabela.getElementsByTagName("tr");
+  function filtrarTabela() {
+    const termo = getValue("pesquisa").toLowerCase();
+    Array.from(tabela.rows).forEach(row => {
+      row.style.display = Array.from(row.cells).some(cell => cell.innerText.toLowerCase().includes(termo)) ? "" : "none";
+    });
+  }
 
-      for (let i = 0; i < linhas.length; i++) {
-        const colunas = linhas[i].getElementsByTagName("td");
-        let visivel = false;
+  function exportarCSV() {
+    let csv = "Data/Hora,Componente,Modelo,Causa,Ações,Responsável,Departamento,Prioridade,Status\n";
+    dadosSalvos.forEach(acao => {
+      csv += Object.values(acao).map(val => `"${val.replace(/"/g, '""')}"`).join(",") + "\n";
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "acoes_registradas.csv";
+    link.click();
+  }
 
-        for (let j = 0; j < colunas.length - 1; j++) {
-          if (colunas[j].innerText.toLowerCase().includes(termo)) {
-            visivel = true;
-            break;
-          }
-        }
+  function getValue(id) {
+    return document.getElementById(id).value;
+  }
 
-        linhas[i].style.display = visivel ? "" : "none";
-      }
-    }
-  </script>
+  function setValue(id, val) {
+    document.getElementById(id).value = val;
+  }
+
+  atualizarTabela();
+</script>
 
 </body>
 </html>
