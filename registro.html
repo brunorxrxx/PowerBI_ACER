@@ -1,353 +1,220 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Ações</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Define a fonte Inter para todo o corpo do documento */
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh; /* Garante que o corpo ocupe a altura total da viewport */
-            display: flex;
-            flex-direction: column;
-        }
-        /* Estilos para o modal personalizado */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 0.75rem; /* rounded-lg */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
-            max-width: 90%;
-            width: 400px;
-            text-align: center;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        /* Barra de rolagem personalizada para melhor estética */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Cadastro de Falhas</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .section {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background: #f9f9f9;
+    }
+    .section h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .form-group label {
+      width: 150px;
+      font-weight: bold;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 5px;
+      width: 200px;
+    }
+    .btn {
+      padding: 8px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .search-block {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 20px;
+    }
+    table.dataTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-    <header class="bg-blue-800 text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Sistema de Registro de Ações</h1>
-            <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="#" class="hover:text-blue-200 transition duration-150 ease-in-out">Início</a></li>
-                    <li><a href="#" class="hover:text-blue-200 transition duration-150 ease-in-out">Registrar</a></li>
-                    <li><a href="#" class="hover:text-blue-200 transition duration-150 ease-in-out">Relatórios</a></li>
-                    <li><a href="#" class="hover:text-blue-200 transition duration-150 ease-in-out">Configurações</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <h1>Cadastro de Falhas</h1>
 
-    <main class="flex-grow p-6">
-        <div class="container mx-auto">
-            <h2 class="text-3xl font-extrabold text-blue-700 mb-6 text-center md:text-left">Registrar Nova Ação</h2>
+  <div class="section">
+    <h2>Cadastro</h2>
+    <div class="form-group">
+      <label>BLC:</label>
+      <select id="blc">
+        <option>FBRLA Manaus - L06 - ACER</option>
+      </select>
 
-            <div class="formulario bg-white p-6 rounded-lg shadow-xl max-w-5xl mx-auto mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                    <div>
-                        <label for="componente" class="block text-sm font-medium text-gray-700 mb-1">Componente:</label>
-                        <input type="text" id="componente" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: Software A">
-                    </div>
-                    <div>
-                        <label for="modelo" class="block text-sm font-medium text-gray-700 mb-1">Modelo:</label>
-                        <input type="text" id="modelo" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: Versão 2.0">
-                    </div>
-                    <div>
-                        <label for="causa" class="block text-sm font-medium text-gray-700 mb-1">Causa:</label>
-                        <input type="text" id="causa" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: Erro de configuração">
-                    </div>
-                    <div>
-                        <label for="responsavel" class="block text-sm font-medium text-gray-700 mb-1">Responsável:</label>
-                        <input type="text" id="responsavel" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: João Silva">
-                    </div>
-                    <div>
-                        <label for="departamento" class="block text-sm font-medium text-gray-700 mb-1">Departamento:</label>
-                        <input type="text" id="departamento" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: TI">
-                    </div>
-                    <div>
-                        <label for="prioridade" class="block text-sm font-medium text-gray-700 mb-1">Prioridade:</label>
-                        <select id="prioridade" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option>Baixa</option>
-                            <option>Média</option>
-                            <option>Alta</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status:</label>
-                        <select id="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option>Aberto</option>
-                            <option>Em andamento</option>
-                            <option>Fechado</option>
-                        </select>
-                    </div>
-                </div>
+      <label>Modelo:</label>
+      <input type="text" id="modelo">
 
-                <div class="mb-6">
-                    <label for="acoes" class="block text-sm font-medium text-gray-700 mb-1">Ações:</label>
-                    <textarea id="acoes" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm h-24 resize-y" placeholder="Descreva a ação tomada..."></textarea>
-                </div>
-
-                <button onclick="salvarAcao()" class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out">Salvar</button>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto mb-6 gap-4">
-                <input type="text" id="pesquisa" placeholder="Pesquisar..." onkeyup="filtrarTabela()" class="flex-grow px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                <button onclick="exportarCSV()" class="w-full md:w-auto px-6 py-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-150 ease-in-out">Exportar para Excel</button>
-            </div>
-
-            <div class="mx-auto bg-white rounded-lg shadow-xl">
-                <table id="tabela-acoes" class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data/Hora</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Componente</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Modelo</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Causa</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsável</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departamento</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridade</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gerenciar</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-gray-800 text-white p-4 mt-8 text-center">
-        <div class="container mx-auto">
-            <p>&copy; 2023 Sistema de Registro de Ações. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-    <div id="customModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <p id="modalMessage" class="text-gray-800 text-lg mb-4"></p>
-            <input type="password" id="modalInput" class="hidden w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4" placeholder="Senha">
-            <div class="modal-buttons">
-                <button id="modalConfirmBtn" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hidden">Confirmar</button>
-                <button id="modalCancelBtn" class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Fechar</button>
-            </div>
-        </div>
+      <label>Work Order:</label>
+      <input type="text" id="workOrder">
     </div>
 
-    <script>
-        const tabela = document.querySelector("#tabela-acoes tbody");
-        const dadosSalvos = JSON.parse(localStorage.getItem("acoesRegistradas")) || [];
-        let indexEditando = null;
+    <div class="form-group">
+      <label>Linha:</label>
+      <input type="text" id="linha">
 
-        // Elementos do Modal
-        const customModal = document.getElementById('customModal');
-        const modalMessage = document.getElementById('modalMessage');
-        const modalInput = document.getElementById('modalInput');
-        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-        const modalCancelBtn = document.getElementById('modalCancelBtn');
+      <label>Estação de teste:</label>
+      <input type="text" id="estacaoTeste">
+    </div>
 
-        // Função para exibir alerta personalizado
-        function showAlert(message) {
-            modalMessage.innerText = message;
-            modalInput.classList.add('hidden'); // Oculta o input para alertas
-            modalConfirmBtn.classList.add('hidden'); // Oculta o botão de confirmação para alertas
-            modalCancelBtn.innerText = 'OK'; // Altera o texto do botão de fechar
-            customModal.classList.remove('hidden');
-            return new Promise(resolve => {
-                modalCancelBtn.onclick = () => {
-                    customModal.classList.add('hidden');
-                    resolve(true); // Resolve imediatamente para alerta
-                };
-            });
-        }
+    <div class="form-group">
+      <label>Estação de reparo:</label>
+      <input type="text" id="estacaoReparo">
 
-        // Função para exibir prompt personalizado
-        function showPrompt(message) {
-            modalMessage.innerText = message;
-            modalInput.value = ''; // Limpa o input anterior
-            modalInput.classList.remove('hidden'); // Mostra o input para prompts
-            modalConfirmBtn.classList.remove('hidden'); // Mostra o botão de confirmação
-            modalCancelBtn.innerText = 'Cancelar'; // Altera o texto do botão de fechar
-            customModal.classList.remove('hidden');
+      <label>Código do motivo:</label>
+      <input type="text" id="codigoMotivo">
+    </div>
 
-            return new Promise(resolve => {
-                modalConfirmBtn.onclick = () => {
-                    customModal.classList.add('hidden');
-                    resolve(modalInput.value);
-                };
-                modalCancelBtn.onclick = () => {
-                    customModal.classList.add('hidden');
-                    resolve(null); // Resolve com null se cancelado
-                };
-            });
-        }
+    <div class="form-group">
+      <label>Descrição:</label>
+      <input type="text" id="descricao">
 
-        async function salvarAcao() {
-            const novaAcao = {
-                dataHora: new Date().toLocaleString(),
-                componente: getValue("componente"),
-                modelo: getValue("modelo"),
-                causa: getValue("causa"),
-                acoes: getValue("acoes"),
-                responsavel: getValue("responsavel"),
-                departamento: getValue("departamento"),
-                prioridade: getValue("prioridade"),
-                status: getValue("status")
-            };
+      <label>Item:</label>
+      <input type="text" id="item">
+    </div>
 
-            // Verifica se algum campo está vazio
-            const isEmpty = Object.values(novaAcao).some(val => typeof val === 'string' ? val.trim() === "" : val === null || val === undefined);
+    <div class="form-group">
+      <label>Responsável:</label>
+      <input type="text" id="responsavel">
 
-            if (isEmpty) {
-                await showAlert("Preencha todos os campos.");
-                return;
-            }
+      <label>Ações:</label>
+      <textarea id="acoes"></textarea>
+    </div>
 
-            if (indexEditando !== null) {
-                novaAcao.dataHora = dadosSalvos[indexEditando].dataHora; // Mantém o timestamp original para item editado
-                dadosSalvos[indexEditando] = novaAcao;
-                indexEditando = null;
-                document.querySelector("button[onclick='salvarAcao()']").innerText = "Salvar";
-            } else {
-                dadosSalvos.push(novaAcao);
-            }
+    <button class="btn" onclick="salvar()">Salvar</button>
 
-            atualizarStorage();
-            atualizarTabela();
-            limparCampos();
-        }
+    <div class="search-block">
+      <label>Pesquisar:</label>
+      <input type="text" id="pesquisar" placeholder="Buscar..." onkeyup="filtrarTabela()">
+    </div>
+  </div>
 
-        function atualizarStorage() {
-            localStorage.setItem("acoesRegistradas", JSON.stringify(dadosSalvos));
-        }
+  <div class="section">
+    <h2>Resultado</h2>
+    <table id="tabela" class="display">
+      <thead>
+        <tr>
+          <th>BLC</th>
+          <th>Modelo</th>
+          <th>Work Order</th>
+          <th>Linha</th>
+          <th>Estação de teste</th>
+          <th>Estação de reparo</th>
+          <th>Código do motivo</th>
+          <th>Descrição</th>
+          <th>Item</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+          <th>Data da falha</th>
+          <th>Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- registros adicionados aparecem aqui -->
+      </tbody>
+    </table>
+  </div>
 
-        function atualizarTabela() {
-            tabela.innerHTML = ""; // Limpa as linhas existentes
-            dadosSalvos.forEach((acao, index) => {
-                const linha = tabela.insertRow();
-                linha.className = 'hover:bg-gray-50'; // Adiciona efeito de hover às linhas
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      window.tabela = $('#tabela').DataTable({
+        paging: true,
+        searching: true
+      });
+    });
 
-                // Preenche as células com os dados
-                for (let chave of ['dataHora', 'componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status']) {
-                    const cell = linha.insertCell();
-                    cell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-800';
-                    cell.innerText = acao[chave];
-                }
+    function salvar() {
+      const dataAtual = new Date().toLocaleString();
+      const blc = $('#blc').val();
+      const modelo = $('#modelo').val();
+      const workOrder = $('#workOrder').val();
+      const linha = $('#linha').val();
+      const estacaoTeste = $('#estacaoTeste').val();
+      const estacaoReparo = $('#estacaoReparo').val();
+      const codigoMotivo = $('#codigoMotivo').val();
+      const descricao = $('#descricao').val();
+      const item = $('#item').val();
+      const responsavel = $('#responsavel').val();
+      const acoes = $('#acoes').val();
 
-                // Adiciona botões de ação (Editar/Excluir)
-                const cell = linha.insertCell();
-                cell.className = 'px-6 py-4 whitespace-nowrap text-right text-sm font-medium';
-                const btnEditar = criarBotao("Editar", "bg-yellow-400 text-gray-900 hover:bg-yellow-500", () => editarLinha(index));
-                const btnExcluir = criarBotao("Excluir", "bg-red-600 text-white hover:bg-red-700 ml-2", () => excluirLinha(index)); // Adicionado ml-2 para espaçamento
-                cell.append(btnEditar, btnExcluir);
-            });
-        }
+      tabela.row.add([
+        blc,
+        modelo,
+        workOrder,
+        linha,
+        estacaoTeste,
+        estacaoReparo,
+        codigoMotivo,
+        descricao,
+        item,
+        responsavel,
+        acoes,
+        dataAtual,
+        `<button class="btn" onclick="editar(this)">Editar</button>
+         <button class="btn" onclick="excluir(this)">Excluir</button>`
+      ]).draw();
 
-        function criarBotao(texto, tailwindClasses, onClick) {
-            const btn = document.createElement("button");
-            btn.innerText = texto;
-            btn.className = `px-3 py-1 text-xs font-semibold rounded-md transition duration-150 ease-in-out ${tailwindClasses}`;
-            btn.onclick = onClick;
-            return btn;
-        }
+      $('input, textarea').val('');
+    }
 
-        function editarLinha(index) {
-            const acao = dadosSalvos[index];
-            for (let chave of ['componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status']) {
-                setValue(chave, acao[chave]);
-            }
-            indexEditando = index;
-            document.querySelector("button[onclick='salvarAcao()']").innerText = "Atualizar";
-        }
+    function excluir(btn) {
+      tabela.row($(btn).parents('tr')).remove().draw();
+    }
 
-        async function excluirLinha(index) {
-            const senha = await showPrompt("Digite a senha para excluir:");
-            if (senha === "123") {
-                dadosSalvos.splice(index, 1);
-                atualizarStorage();
-                atualizarTabela();
-            } else if (senha !== null) { // Mostra senha incorreta apenas se o usuário não cancelou
-                await showAlert("Senha incorreta.");
-            }
-        }
+    function editar(btn) {
+      const row = tabela.row($(btn).parents('tr'));
+      const data = row.data();
 
-        function limparCampos() {
-            ['componente', 'modelo', 'causa', 'acoes', 'responsavel', 'departamento', 'prioridade', 'status'].forEach(id => setValue(id, ""));
-        }
+      $('#blc').val(data[0]);
+      $('#modelo').val(data[1]);
+      $('#workOrder').val(data[2]);
+      $('#linha').val(data[3]);
+      $('#estacaoTeste').val(data[4]);
+      $('#estacaoReparo').val(data[5]);
+      $('#codigoMotivo').val(data[6]);
+      $('#descricao').val(data[7]);
+      $('#item').val(data[8]);
+      $('#responsavel').val(data[9]);
+      $('#acoes').val(data[10]);
 
-        function filtrarTabela() {
-            const termo = getValue("pesquisa").toLowerCase();
-            Array.from(tabela.rows).forEach(row => {
-                // Verifica todas as células para o termo de pesquisa
-                const rowText = Array.from(row.cells).map(cell => cell.innerText.toLowerCase()).join(" ");
-                row.style.display = rowText.includes(termo) ? "" : "none";
-            });
-        }
+      row.remove().draw();
+    }
 
-        function exportarCSV() {
-            let csv = "Data/Hora,Componente,Modelo,Causa,Ações,Responsável,Departamento,Prioridade,Status\n";
-            dadosSalvos.forEach(acao => {
-                // Escapa aspas duplas dentro dos dados e envolve os campos em aspas duplas
-                csv += Object.values(acao).map(val => `"${String(val).replace(/"/g, '""')}"`).join(",") + "\n";
-            });
-            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "acoes_registradas.csv";
-            link.click();
-        }
-
-        function getValue(id) {
-            return document.getElementById(id).value;
-        }
-
-        function setValue(id, val) {
-            document.getElementById(id).value = val;
-        }
-
-        // Carregamento inicial da tabela
-        atualizarTabela();
-    </script>
+    function filtrarTabela() {
+      const search = $('#pesquisar').val();
+      tabela.search(search).draw();
+    }
+  </script>
 
 </body>
 </html>
